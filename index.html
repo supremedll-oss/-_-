@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>可编辑分镜脚本工作台</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section id="homeView" class="home-view">
+        <header class="home-hero">
+          <div>
+            <h1>分镜项目库</h1>
+            <p>用瀑布流卡片管理你的短片、广告、AI 视频和概念片段。</p>
+          </div>
+          <button id="createProjectBtn" type="button">新建项目</button>
+        </header>
+        <section id="projectMasonry" class="project-masonry" aria-label="项目列表"></section>
+      </section>
+
+      <section id="editorView" class="editor-view" hidden>
+        <header class="editor-topline">
+          <button id="backHomeBtn" type="button" class="ghost-button">返回首页</button>
+          <div class="editor-tools">
+            <button id="exportJsonBtn" type="button">导出工程</button>
+            <button id="exportScriptBtn" type="button">导出脚本</button>
+            <label class="file-button">
+              导入工程
+              <input id="importJsonInput" type="file" accept="application/json">
+            </label>
+          </div>
+        </header>
+
+        <section class="editor-header-grid">
+          <section class="project-card" aria-label="项目信息">
+            <label>
+              <span>项目名</span>
+              <input id="projectTitle" type="text" autocomplete="off">
+            </label>
+            <div class="project-stat">
+              <span>总镜头数</span>
+              <strong id="projectShotCount">0</strong>
+            </div>
+            <div class="project-stat">
+              <span>时长</span>
+              <strong id="projectDuration">0:00</strong>
+            </div>
+          </section>
+
+          <section class="timeline-panel" aria-label="时间线">
+            <div class="panel-title">
+              <div>
+                <h1>分镜时间线</h1>
+                <p id="timelineSummary"></p>
+              </div>
+              <div class="timeline-actions" aria-label="时间线缩放">
+                <button id="compactTimelineBtn" type="button" title="缩小时间线">-</button>
+                <button id="wideTimelineBtn" type="button" title="放大时间线">+</button>
+              </div>
+            </div>
+            <div class="timeline-stage">
+              <div id="timelineRuler" class="timeline-ruler" aria-hidden="true"></div>
+              <div class="timeline-track">
+                <div id="timeline" class="timeline"></div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="workspace">
+          <aside class="shot-list-panel" aria-label="镜头列表">
+            <div class="panel-title tight">
+              <h2>镜头列表</h2>
+            </div>
+            <div id="shotList" class="shot-list"></div>
+          </aside>
+
+          <section class="editor-panel" aria-label="分镜编辑器">
+            <div id="emptyState" class="empty-state" hidden></div>
+
+            <form id="shotEditor" class="shot-editor" hidden>
+              <div class="editor-heading">
+                <label>
+                  <span>镜号</span>
+                  <input data-field="code" type="text">
+                </label>
+                <label>
+                  <span>场景</span>
+                  <input data-field="scene" type="text">
+                </label>
+                <label>
+                  <span>时长(秒)</span>
+                  <input data-field="duration" type="number" min="1" step="1">
+                </label>
+                <label>
+                  <span>节奏</span>
+                  <select data-field="pace">
+                    <option>舒缓</option>
+                    <option>常规</option>
+                    <option>紧张</option>
+                    <option>爆发</option>
+                  </select>
+                </label>
+              </div>
+
+              <section class="node-section">
+                <div class="node-toolbar">
+                  <div>
+                    <h2>分镜节点画布</h2>
+                    <p>拖动节点整理关系，小节点靠近大节点会自动吸附。</p>
+                  </div>
+                  <div class="node-actions">
+                    <button type="button" data-add-main-node="storyboard">分镜画面</button>
+                    <button type="button" data-add-main-node="reference">参考画面</button>
+                    <button type="button" data-add-main-node="effect">参考效果</button>
+                    <button type="button" id="autoLayoutNodesBtn">自动排布</button>
+                  </div>
+                </div>
+                <div id="nodeCanvas" class="node-canvas" aria-label="节点式分镜画布"></div>
+              </section>
+            </form>
+          </section>
+
+          <aside class="side-panel" aria-label="灵感收集器">
+            <section class="inspiration-panel">
+              <div class="panel-title tight">
+                <h2>灵感收集器</h2>
+                <button id="addInspirationBtn" type="button">添加</button>
+              </div>
+              <div class="collector-form">
+                <input id="inspirationTitle" type="text" placeholder="网页标题">
+                <input id="inspirationUrl" type="url" placeholder="https://example.com/reference">
+                <input id="inspirationTags" type="text" placeholder="标签，用逗号分隔">
+                <select id="inspirationType">
+                  <option>构图</option>
+                  <option>色彩</option>
+                  <option>灯光</option>
+                  <option>表演</option>
+                  <option>剪辑节奏</option>
+                  <option>视觉效果</option>
+                </select>
+              </div>
+              <div id="inspirationList" class="inspiration-list"></div>
+            </section>
+          </aside>
+        </section>
+
+        <section class="ai-panel full-row">
+          <div class="panel-title tight">
+            <div>
+              <h2>AI视频提示词收集</h2>
+              <p>关键词可以拖到节点画布生成小节点，也可以拖到输入框自动追加分号。</p>
+            </div>
+            <button id="addKeywordBtn" type="button">加词</button>
+          </div>
+          <div class="ai-layout">
+            <section class="prompt-sentence">
+              <label>
+                <span>核心主体</span>
+                <input data-prompt-slot="subject" type="text" placeholder="年轻导演、机械花、未来城市">
+              </label>
+              <strong>在</strong>
+              <label>
+                <span>特定场景</span>
+                <input data-prompt-slot="scene" type="text" placeholder="雨夜街口、废弃剧场">
+              </label>
+              <strong>完成</strong>
+              <label>
+                <span>叙事动作</span>
+                <input data-prompt-slot="action" type="text" placeholder="追逐、告别、发现线索">
+              </label>
+            </section>
+            <section class="keyword-builder">
+              <div class="keyword-inputs">
+                <input id="keywordInput" type="text" placeholder="输入提示词，用逗号分隔">
+                <select id="keywordType">
+                  <option>核心主体</option>
+                  <option>特定场景</option>
+                  <option>叙事动作</option>
+                  <option>时长</option>
+                  <option>运镜类型</option>
+                  <option>景别构图</option>
+                  <option>布光方案</option>
+                  <option>核心色调</option>
+                </select>
+              </div>
+              <div id="keywordCategoryList" class="keyword-category-list" aria-label="提示词分类"></div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <template id="nodeTemplate">
+      <article class="canvas-node">
+        <button type="button" class="connection-port" data-connection-port title="连接节点"></button>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
