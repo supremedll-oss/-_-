@@ -75,13 +75,6 @@
         </section>
 
         <section class="workspace">
-          <aside class="shot-list-panel" aria-label="镜头列表">
-            <div class="panel-title tight">
-              <h2>镜头列表</h2>
-            </div>
-            <div id="shotList" class="shot-list"></div>
-          </aside>
-
           <section class="editor-panel" aria-label="分镜编辑器">
             <div id="emptyState" class="empty-state" hidden></div>
 
@@ -127,82 +120,81 @@
               </section>
             </form>
           </section>
-
-          <aside class="side-panel" aria-label="灵感收集器">
-            <section class="inspiration-panel">
-              <div class="panel-title tight">
-                <h2>灵感收集器</h2>
-                <button id="addInspirationBtn" type="button">添加</button>
-              </div>
-              <div class="collector-form">
-                <input id="inspirationTitle" type="text" placeholder="网页标题">
-                <input id="inspirationUrl" type="url" placeholder="https://example.com/reference">
-                <input id="inspirationTags" type="text" placeholder="标签，用逗号分隔">
-                <select id="inspirationType">
-                  <option>构图</option>
-                  <option>色彩</option>
-                  <option>灯光</option>
-                  <option>表演</option>
-                  <option>剪辑节奏</option>
-                  <option>视觉效果</option>
-                </select>
-              </div>
-              <div id="inspirationList" class="inspiration-list"></div>
-            </section>
-          </aside>
         </section>
 
-        <section class="ai-panel full-row">
-          <div class="panel-title tight">
-            <div>
-              <h2>AI视频提示词收集</h2>
-              <p>关键词可以拖到节点画布生成小节点，也可以拖到输入框自动追加分号。</p>
-            </div>
-            <button id="addKeywordBtn" type="button">加词</button>
-          </div>
-          <div class="ai-layout">
-            <section class="prompt-sentence">
-              <label>
-                <span>核心主体</span>
-                <input data-prompt-slot="subject" type="text" placeholder="年轻导演、机械花、未来城市">
-              </label>
-              <strong>在</strong>
-              <label>
-                <span>特定场景</span>
-                <input data-prompt-slot="scene" type="text" placeholder="雨夜街口、废弃剧场">
-              </label>
-              <strong>完成</strong>
-              <label>
-                <span>叙事动作</span>
-                <input data-prompt-slot="action" type="text" placeholder="追逐、告别、发现线索">
-              </label>
-            </section>
-            <section class="keyword-builder">
-              <div class="keyword-inputs">
-                <input id="keywordInput" type="text" placeholder="输入提示词，用逗号分隔">
-                <select id="keywordType">
-                  <option>核心主体</option>
-                  <option>特定场景</option>
-                  <option>叙事动作</option>
-                  <option>时长</option>
-                  <option>运镜类型</option>
-                  <option>景别构图</option>
-                  <option>布光方案</option>
-                  <option>核心色调</option>
-                </select>
+        <section class="resource-grid">
+          <section class="ai-panel">
+            <div class="panel-title tight">
+              <div>
+                <h2>AI视频提示词收集</h2>
+                <p>关键词可以拖到节点画布生成小节点，也可以拖到输入框自动追加分号。</p>
               </div>
-              <div id="keywordCategoryList" class="keyword-category-list" aria-label="提示词分类"></div>
-            </section>
-          </div>
+              <button id="addKeywordBtn" type="button">加词</button>
+            </div>
+            <div class="ai-layout">
+              <section class="prompt-sentence">
+                <label>
+                  <span>核心主体</span>
+                  <input data-prompt-slot="subject" type="text" placeholder="年轻导演、机械花、未来城市">
+                </label>
+                <strong>在</strong>
+                <label>
+                  <span>特定场景</span>
+                  <input data-prompt-slot="scene" type="text" placeholder="雨夜街口、废弃剧场">
+                </label>
+                <strong>完成</strong>
+                <label>
+                  <span>叙事动作</span>
+                  <input data-prompt-slot="action" type="text" placeholder="追逐、告别、发现线索">
+                </label>
+              </section>
+              <section class="keyword-builder">
+                <div class="keyword-inputs">
+                  <input id="keywordInput" type="text" placeholder="输入提示词，用逗号分隔">
+                  <select id="keywordType">
+                    <option>核心主体</option>
+                    <option>特定场景</option>
+                    <option>叙事动作</option>
+                    <option>时长</option>
+                    <option>运镜类型</option>
+                    <option>景别构图</option>
+                    <option>布光方案</option>
+                    <option>核心色调</option>
+                  </select>
+                </div>
+                <div id="keywordCategoryList" class="keyword-category-list" aria-label="提示词分类"></div>
+              </section>
+            </div>
+          </section>
+
+          <section class="inspiration-panel">
+            <div class="panel-title tight">
+              <h2>灵感收集器</h2>
+              <button id="addInspirationBtn" type="button">添加</button>
+            </div>
+            <div class="collector-form">
+              <input id="inspirationTitle" type="text" placeholder="网页标题">
+              <input id="inspirationUrl" type="url" placeholder="https://example.com/reference">
+              <input id="inspirationTags" type="text" placeholder="标签，用逗号分隔">
+              <select id="inspirationType">
+                <option>构图</option>
+                <option>色彩</option>
+                <option>灯光</option>
+                <option>表演</option>
+                <option>剪辑节奏</option>
+                <option>视觉效果</option>
+              </select>
+              <label class="file-button inspiration-file">
+                上传图片/GIF
+                <input id="inspirationAssetInput" type="file" accept="image/*" multiple>
+              </label>
+            </div>
+            <div id="inspirationPreview" class="inspiration-preview" hidden></div>
+            <div id="inspirationList" class="inspiration-list"></div>
+          </section>
         </section>
       </section>
     </main>
-
-    <template id="nodeTemplate">
-      <article class="canvas-node">
-        <button type="button" class="connection-port" data-connection-port title="连接节点"></button>
-      </article>
-    </template>
 
     <script src="app.js"></script>
   </body>
